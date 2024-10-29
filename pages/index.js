@@ -1,10 +1,11 @@
 export async function getStaticProps() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users`);
+  // Здесь вы можете получать данные из API или другой базы данных
+  const response = await fetch(`http://localhost:3000/api/users`);
   const users = await response.json();
 
   return {
     props: {
-      users,
+      users, // Передаем пользователей как пропсы
     },
   };
 }
