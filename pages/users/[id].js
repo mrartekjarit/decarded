@@ -1,37 +1,32 @@
 import { useRouter } from 'next/router';
 
-export async function getStaticPaths() {
-  const paths = [
-    { params: { id: '1' } },
-    { params: { id: '2' } },
-    { params: { id: '3' } },
-  ];
-  return { paths, fallback: false }; // Здесь установите fallback: true, если хотите обрабатывать динамические пути
+export default function User() {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return <div>User ID: {id}</div>;
 }
 
 export async function getStaticProps({ params }) {
-  const { id } = params; // Убедитесь, что id правильно передан
+  const res = await fetch(`http://localhost:3000/api/users`);
+  const users = await res.json();
 
-  const response = await fetch(`https://urhub.vercel.app/api/users`);
-  const users = await response.json();
-
-  // Найти пользователя по ID
-  const user = users.find((u) => u.id.toString() === id);
+  const user = users.find(user => user.id === parseInt(params.id));
 
   return {
     props: {
-      user: user || { id, name: 'Unknown' },
+      user: user || null,
     },
   };
 }
 
-const User = ({ user }) => {
-  return (
-    <div>
-      <h1>User ID: {user.id}</h1>
-      <p>Name: {user.name}</p>
-    </div>
-  );
-};
+export async function getStaticPaths() {
+  const res = await fetch(`http://localhost:3000/api/users`);
+  const users = await res.json();
 
-export default User;
+  const paths = users.map(user => ({
+    params: { id: user.id.toString() },
+  }));
+
+  return { paths, fallback: true };
+}
