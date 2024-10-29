@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const { id } = params; // Убедитесь, что id правильно передан
 
-  const response = await fetch(`http://localhost:3000/api/users`);
+  const response = await fetch(`https://urhub.vercel.app/api/users`);
   const users = await response.json();
 
   // Найти пользователя по ID
