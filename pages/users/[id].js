@@ -1,32 +1,38 @@
 import { useRouter } from 'next/router';
 
-export default function User() {
-  const router = useRouter();
-  const { id } = router.query;
-
-  return <div>User ID: {id}</div>;
+export async function getStaticPaths() {
+  const paths = [
+    { params: { id: '1' } },
+    { params: { id: '2' } },
+    { params: { id: '3' } },
+  ];
+  return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const response = await fetch(`/api/users`);
-  const users = await res.json();
+  const { id } = params;
 
-  const user = users.find(user => user.id === parseInt(params.id));
+  // Запрос к API для получения пользователей
+  const response = await fetch(`http://localhost:3000/api/users`);
+  const users = await response.json();
+
+  // Найти пользователя по ID
+  const user = users.find((u) => u.id.toString() === id);
 
   return {
     props: {
-      user: user || null,
+      user: user || { id, name: 'Unknown' }, // Если пользователь не найден, возвращаем Unknown
     },
   };
 }
 
-export async function getStaticPaths() {
-  const response = await fetch(`/api/users`);
-  const users = await res.json();
+const User = ({ user }) => {
+  return (
+    <div>
+      <h1>User ID: {user.id}</h1>
+      <p>Name: {user.name}</p>
+    </div>
+  );
+};
 
-  const paths = users.map(user => ({
-    params: { id: user.id.toString() },
-  }));
-
-  return { paths, fallback: true };
-}
+export default User;
