@@ -6,13 +6,12 @@ export async function getStaticPaths() {
     { params: { id: '2' } },
     { params: { id: '3' } },
   ];
-  return { paths, fallback: true };
+  return { paths, fallback: false }; // Здесь установите fallback: true, если хотите обрабатывать динамические пути
 }
 
 export async function getStaticProps({ params }) {
-  const { id } = params;
+  const { id } = params; // Убедитесь, что id правильно передан
 
-  // Запрос к API для получения пользователей
   const response = await fetch(`http://localhost:3000/api/users`);
   const users = await response.json();
 
@@ -21,7 +20,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
-      user: user || { id, name: 'Unknown' }, // Если не нашли, возвращаем Unknown
+      user: user || { id, name: 'Unknown' },
     },
   };
 }
