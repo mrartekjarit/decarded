@@ -1,10 +1,28 @@
-export default function Home() {
-    return (
-      <div>
-        <h1>Welcome to My Next.js App</h1>
-        <p>This is the home page</p>
-        <p>maybe</p>
-        <h1>YEEEEES</h1>
-      </div>
-    );
-  }
+export async function getStaticProps() {
+  // Здесь вы можете получать данные из API или другой базы данных
+  const response = await fetch(`http://localhost:3000/api/users`);
+  const users = await response.json();
+
+  return {
+    props: {
+      users, // Передаем пользователей как пропсы
+    },
+  };
+}
+
+const Home = ({ users }) => {
+  return (
+    <div>
+      <h1>Users List</h1>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.name} (ID: {user.id})
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Home;

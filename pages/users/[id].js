@@ -6,7 +6,7 @@ export async function getStaticPaths() {
     { params: { id: '2' } },
     { params: { id: '3' } },
   ];
-  return { paths, fallback: false };
+  return { paths, fallback: true };
 }
 
 export async function getStaticProps({ params }) {
@@ -21,7 +21,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: {
-      user: user || { id, name: 'Unknown' }, // Если пользователь не найден, возвращаем Unknown
+      user: user || { id, name: 'Unknown' }, // Если не нашли, возвращаем Unknown
     },
   };
 }
