@@ -8,7 +8,7 @@ export default function User() {
 }
 
 export async function getStaticProps({ params }) {
-  const res = await fetch(`http://localhost:3000/api/users`);
+  const response = await fetch(`/api/users`);
   const users = await res.json();
 
   const user = users.find(user => user.id === parseInt(params.id));
@@ -21,7 +21,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`http://localhost:3000/api/users`);
+  const response = await fetch(`/api/users`);
   const users = await res.json();
 
   const paths = users.map(user => ({

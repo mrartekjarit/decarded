@@ -1,6 +1,6 @@
 export async function getStaticProps() {
   // Здесь вы можете получать данные из API или другой базы данных
-  const response = await fetch(`http://localhost:3000/api/users`);
+  const response = await fetch(`/api/users`);
   const users = await response.json();
 
   return {
