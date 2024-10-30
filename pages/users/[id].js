@@ -13,7 +13,7 @@ export async function getStaticProps({ params }) {
   const { id } = params;
 
   // Запрос к API для получения пользователей
-  const response = await fetch(`https://urhub.vercel.app/api/users`);
+  const response = await fetch(`http://localhost:3000/api/users`);
   const users = await response.json();
 
   // Найти пользователя по ID
